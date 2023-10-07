@@ -1,0 +1,41 @@
+.navigation {
+    width: 100%;
+    height: 8%;
+    padding: 0 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navigationTitle {
+    font-size: 1.1rem;
+    font-weight: 900;
+    font-weight: 900;
+}
+
+.navigationLink {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .4rem .6rem;
+    border-radius: var(--sm-radius);
+    border: 1px solid var(--blue);
+    background-color: var(--light-blue);
+    color: var(--blue);
+}
+
+.navigationLinkIcon {
+    font-size: 1rem;
+}
+
+.navigationLinkText {
+    font-size: .8rem;
+}
+
+@media screen and (max-width: 480px) {
+    .navigationTitle {
+        font-size: 1.2rem;
+    }
+}

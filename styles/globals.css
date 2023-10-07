@@ -1,0 +1,31 @@
+:root {
+  --primary: #EB8E13;
+  --light-primary: #ffd49c;
+  --black: #000000;
+  --white: #ffffff;
+  --bg: rgb(238, 238, 238);
+  --green: rgb(0, 134, 0);
+  --light-green: rgb(224, 255, 224);
+  --blue: rgb(0, 121, 190);
+  --light-blue: rgb(200, 235, 255);
+  --orange: orange;
+  --light-orange: rgb(255, 239, 210);
+  --red: red;
+
+  /* Border radius */
+  --sm-radius: 5px;
+  --md-radius: 10px;
+  --lg-radius: 15px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100dvh;
+  width: 100dvw;
+  overflow-x: hidden;
+}
