@@ -10,7 +10,7 @@ import {FiImage} from "react-icons/fi";
 
 
 const options : string[] = [
-    "Concor", "Community Build", "Blue Moon Project", "IGUAL", "Jagger Library"
+    "Concor", "Community Build", "Blue Moon Project", "IGUAL"
 ]
 
 export default function ImageUpload() {
