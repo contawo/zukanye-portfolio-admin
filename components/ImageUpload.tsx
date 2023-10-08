@@ -14,7 +14,7 @@ const options : string[] = [
 ]
 
 export default function ImageUpload() {
-    const [selectedCategory, setSelectedCategory] = useState("Select Category")
+    const [selectedCategory, setSelectedCategory] = useState("Select category")
     const [showSelection, setShowSelection] = useState<boolean>(false)
     const [selectedImage, setSelectedImage] = useState<{url: string, file: any}>({
         url: "",
@@ -24,6 +24,13 @@ export default function ImageUpload() {
         title: "",
         text: ""
     })
+
+    const cancelUpload = () => {
+        setInputFields({title: "", text: ""})
+        setSelectedCategory("Select category")
+        setShowSelection(false)
+        setSelectedImage({url: "", file: null})
+    }
 
     return (
         <section className={styles.imageUpload}>
@@ -125,6 +132,7 @@ export default function ImageUpload() {
                     className={styles.inputArea}
                 />
                 <div className={styles.submitContainer}>
+                    <button className={styles.submitContainerCancel} onClick={cancelUpload}>Restart upload</button>
                     <button className={styles.submitContainerButton}>Upload Image</button>
                 </div>
             </section>

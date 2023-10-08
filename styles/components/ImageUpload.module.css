@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: center;
     gap: .6rem;
-    border: 2px dashed grey;
+    border: 2px dashed var(--dark-grey);
     border-radius: var(--md-radius);
     background-color: var(--white);
     cursor: pointer;
@@ -185,13 +185,15 @@
     font-family: "Roboto";
     font-size: .9rem;
     resize: none;
+    outline: none;
 }
 
 .submitContainer {
     margin-top: 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+    gap: .6rem;
 }
 
 .submitContainerButton {
@@ -199,11 +201,27 @@
     outline: none;
     border: none;
     border-radius: var(--sm-radius);
-    background-color: var(--primary);
+    background-color: var(--black);
+    border: 1px solid var(--black);
     color: var(--white);
     font-size: .9rem;
     font-weight: 700;
     cursor: pointer;
+    width: 50%;
+}
+
+.submitContainerCancel {
+    padding: .8rem 1rem;
+    outline: none;
+    border: none;
+    border-radius: var(--sm-radius);
+    /* background-color: var(--black); */
+    border: 1px solid var(--black);
+    color: var(--black);
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 50%;
 }
 
 @media screen and (max-width: 480px) {
