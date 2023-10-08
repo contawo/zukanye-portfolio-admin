@@ -9,34 +9,66 @@
     border-bottom: 1px solid var(--dark-grey);
 }
 
-.navigationTitle {
-    font-size: 1.1rem;
-    font-weight: 900;
-    font-weight: 900;
-}
-
-.navigationLink {
-    text-decoration: none;
+.navigationMain {
     display: flex;
     align-items: center;
-    gap: .3rem;
-    padding: .4rem .6rem;
-    border-radius: var(--sm-radius);
+    gap: 1rem;
+}
+
+.navigationMainTitle {
+    font-size: 1.1rem;
+}
+
+.navigationMainImage {
     border: 1px solid var(--blue);
     background-color: var(--light-blue);
+    padding: .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--sm-radius);
+}
+
+.navigationMainImageIcon {
+    font-size: .8rem;
     color: var(--blue);
 }
 
-.navigationLinkIcon {
-    font-size: 1rem;
+.navigationMainDocs {
+    border: 1px solid var(--orange);
+    background-color: var(--light-orange);
+    padding: .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--sm-radius);
 }
 
-.navigationLinkText {
+.navigationMainDocsIcon {
     font-size: .8rem;
+    color: var(--orange);
 }
 
-@media screen and (max-width: 480px) {
-    .navigationTitle {
-        font-size: 1.2rem;
-    }
+.navigationLinks {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+.navigationLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.navigationLinkIcon {
+    font-size: 1.6rem;
+    color: var(--red);
+}
+
+.navigationLogout {
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
 }
