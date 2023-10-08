@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/styles/components/Navigation.module.css";
 import Link from "next/link";
 import {TbWorldWww} from "react-icons/tb";
