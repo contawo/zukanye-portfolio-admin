@@ -6,6 +6,11 @@ import {FaRegFilePdf} from "react-icons/fa";
 import styles from "@/styles/components/FileUpload.module.css";
 import {FiChevronDown, FiChevronUp} from "react-icons/fi";
 import {PiProjectorScreen} from "react-icons/pi";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db, storage } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 const options : string[] = [
     "Concor", "Community Build", "Blue Moon Project", "IGUAL", "Jagger Library"
@@ -26,11 +31,69 @@ export default function FileUpload() {
     })
     const [showSelection, setShowSelection] = useState<boolean>(false)
     const [selectedCategory, setSelectedCategory] = useState<string>("Select category")
+    const router = useRouter();
 
     const cancelUpload = () => {
         setSelectedFile({url: "", file: null})
         setTitle({text: "", error: ""})
         setDescription({text: "", error: ""})
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            alert("You are not a valid user")
+            router.push("/")
+        }
+    })
+
+    const uploadMedia = () => {
+        if (selectedFile.url.trim().length === 0) {
+            alert("Please select an file")
+            return
+        }
+        if (selectedCategory === "Select category") {
+            setShowSelection(true)
+            return
+        }
+        if (title.text.trim().length === 0) {
+            alert("Please enter file title")
+            return
+        }
+        if (description.text.trim().length === 0) {
+            alert("Please enter file description")
+            return
+        }
+
+        const storageRef = ref(storage, `files/${selectedCategory}/uploadedFiles/${selectedFile.file?.name}`)
+
+        uploadBytes(storageRef, selectedFile.file).then(() => {
+            getDownloadURL(storageRef).then((url) => {
+                const imageRef = collection(db, `data/${selectedCategory}/files`)
+
+                const data = {
+                    fileUrl: `${url}`,
+                    fileTitle: title.text,
+                    fileDescription: description.text
+                }
+
+                addDoc(imageRef, data).then(() => {
+                    alert("File uploaded successfully")
+                    setTitle({text: "", error: ""})
+                    setDescription({text: "", error: ""})
+                    setSelectedCategory("Select category")
+                    setShowSelection(false)
+                    setSelectedFile({url: "", file: null})
+                }).catch((error) => {
+                    alert("There was a problem uplaoding your file to database")
+                    console.log("Error:", error)
+                })
+
+            }).catch(() => {
+                alert("There was a problem downloading your file")
+            }) 
+        }).catch(() => {
+            alert("There was a problem uplaoding your file")
+        })
     }
 
     return (
@@ -122,7 +185,7 @@ export default function FileUpload() {
                 <p>{title.error}</p>
                 <textarea 
                     placeholder="Enter file description..."
-                    onChange={(e) => setTitle({...description, text: e.target.value})}
+                    onChange={(e) => setDescription({...description, text: e.target.value})}
                     value={description.text}
                     className={styles.inputArea}
                 />
@@ -130,7 +193,7 @@ export default function FileUpload() {
             </section>
             <section className={styles.submitContainer}>
                 <button className={styles.submitContainerCancel} onClick={cancelUpload}>Restart upload</button>
-                <button className={styles.submitContainerButton}>Upload file</button>
+                <button className={styles.submitContainerButton} onClick={uploadMedia}>Upload file</button>
             </section>
         </section>
     )

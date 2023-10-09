@@ -7,6 +7,11 @@ import {BsCloudUpload} from "react-icons/bs";
 import styles from "@/styles/components/ImageUpload.module.css";
 import {CiImageOff} from "react-icons/ci";
 import {FiImage} from "react-icons/fi";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db, storage } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 
 const options : string[] = [
@@ -24,12 +29,69 @@ export default function ImageUpload() {
         title: "",
         text: ""
     })
+    const router = useRouter()
 
     const cancelUpload = () => {
         setInputFields({title: "", text: ""})
         setSelectedCategory("Select category")
         setShowSelection(false)
         setSelectedImage({url: "", file: null})
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            alert("You are not a valid user")
+            router.push("/")
+        }
+    })
+
+    const uploadMedia = () => {
+        if (selectedImage.url.trim().length === 0) {
+            alert("Please select an image")
+            return
+        }
+        if (selectedCategory === "Select category") {
+            setShowSelection(true)
+            return
+        }
+        if (inputFields.title.trim().length === 0) {
+            alert("Please enter image title")
+            return
+        }
+        if (inputFields.text.trim().length === 0) {
+            alert("Please enter image description")
+            return
+        }
+
+        const storageRef = ref(storage, `images/${selectedCategory}/uploadedImages/${selectedImage.file?.name}`)
+
+        uploadBytes(storageRef, selectedImage.file).then(() => {
+            getDownloadURL(storageRef).then((url) => {
+                const imageRef = collection(db, `data/${selectedCategory}/images`)
+
+                const data = {
+                    imageUrl: `${url}`,
+                    imageTitle: inputFields.title,
+                    imageDescription: inputFields.text
+                }
+
+                addDoc(imageRef, data).then(() => {
+                    alert("Image uploaded successfully")
+                    setInputFields({title: "", text: ""})
+                    setSelectedCategory("Select category")
+                    setShowSelection(false)
+                    setSelectedImage({url: "", file: null})
+                }).catch((error) => {
+                    alert("There was a problem uplaoding your image to database")
+                    console.log("Error:", error)
+                })
+
+            }).catch(() => {
+                alert("There was a problem downloading your image")
+            }) 
+        }).catch(() => {
+            alert("There was a problem uplaoding your image")
+        })
     }
 
     return (
@@ -133,7 +195,7 @@ export default function ImageUpload() {
                 />
                 <div className={styles.submitContainer}>
                     <button className={styles.submitContainerCancel} onClick={cancelUpload}>Restart upload</button>
-                    <button className={styles.submitContainerButton}>Upload Image</button>
+                    <button className={styles.submitContainerButton} onClick={uploadMedia}>Upload Image</button>
                 </div>
             </section>
         </section>

@@ -5,17 +5,27 @@ import {ImWarning} from "react-icons/im";
 import styles from "@/styles/components/Login.module.css";
 import {AiOutlineMail} from "react-icons/ai";
 import {MdPassword} from "react-icons/md";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-    const [password, setPassword] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<{text: string; error: string}>({
+        text: "",
+        error: ""
+    })
+    const [email, setEmail] = useState<{text: string, error: string}>({
+        text: "",
+        error: ""
+    })
     const [error, setError] = useState<string>("")
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true)
     const getPassword = process.env.NEXT_PUBLIC_PASSWORD;
+    const router = useRouter();
 
     useEffect(() => {
-        if (password === getPassword) {
+        if (password.text === getPassword) {
             setIsDisabled(false)
         } else {
             setIsDisabled(true)
@@ -24,6 +34,26 @@ export default function Login() {
 
     const submit = () => {
         console.log("Submitted")
+        const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.+[a-zA-Z0-9]/
+        if (!email.text.match(validRegex)) {
+            setEmail({...email, error: "Invalid email provided"})
+            setPassword({...password, error: ""})
+            return
+        }
+        if (password.text != getPassword) {
+            setPassword({...password, error: "Invalid password provided"})
+            setEmail({...email, error: ""})
+            return
+        }
+        setEmail({...email, error: ""})
+        setPassword({...password, error: ""})
+
+        signInWithEmailAndPassword(auth, email.text, password.text).then(() => {
+            router.push("/upload")
+        }).catch(() => {
+            setEmail({...email, error: "You are not a valid user"})
+            setPassword({...password, error: "You are not a valid user"})
+        })
     }
 
     return (
@@ -44,12 +74,12 @@ export default function Login() {
                         <input 
                             type="email"
                             placeholder="Enter admin email..."
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
+                            onChange={(e) => setEmail({...email, text: e.target.value})}
+                            value={email.text}
                             className={styles.loginInputField}
                         />
                     </div>
-                    <p className={styles.loginError}>{error}</p>
+                    <p className={styles.loginError}>{email.error}</p>
                 </section>
                 <section className={styles.loginInputSection}>
                     <div className={styles.loginInput}>
@@ -58,12 +88,12 @@ export default function Login() {
                             type="password"
                             placeholder="Enter admin password..."
                             autoComplete="current-password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
+                            onChange={(e) => setPassword({...password, text: e.target.value})}
+                            value={password.text}
                             className={styles.loginInputField}
                         />
                     </div>
-                    <p className={styles.loginError}>{error}</p>
+                    <p className={styles.loginError}>{password.error}</p>
                 </section>
             </section>
             <button disabled={isDisabled} onClick={submit} className={isDisabled ? styles.loginButtonDisable : styles.loginButton}>Continue</button>

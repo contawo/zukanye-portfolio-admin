@@ -6,12 +6,18 @@ import {TbWorldWww} from "react-icons/tb";
 import {BsImage} from "react-icons/bs";
 import {AiOutlineFilePdf} from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
 
 export default function Navigation() {
     const router = useRouter()
 
     const logout = () => {
-        router.push("/")
+        signOut(auth).then(() => {
+            router.push("/")
+        }).catch(() => {
+            alert("Failed to logout")
+        })
     }
 
     return (
