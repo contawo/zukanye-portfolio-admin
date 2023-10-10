@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {FiChevronDown, FiChevronUp} from "react-icons/fi";
 import {PiProjectorScreen} from "react-icons/pi";
 import {BsCloudUpload} from "react-icons/bs";
@@ -11,7 +11,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db, storage } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 
 const options : string[] = [
@@ -38,12 +38,14 @@ export default function ImageUpload() {
         setSelectedImage({url: "", file: null})
     }
 
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            alert("You are not a valid user")
-            router.push("/")
-        }
-    })
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                alert("You are not a valid user")
+                router.push("/")
+            }
+        })
+    }, [router])
 
     const uploadMedia = () => {
         if (selectedImage.url.trim().length === 0) {

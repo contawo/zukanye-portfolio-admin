@@ -1,7 +1,7 @@
 "use client";
 
 import {AiOutlineFilePdf} from "react-icons/ai";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {FaRegFilePdf} from "react-icons/fa";
 import styles from "@/styles/components/FileUpload.module.css";
 import {FiChevronDown, FiChevronUp} from "react-icons/fi";
@@ -39,12 +39,14 @@ export default function FileUpload() {
         setDescription({text: "", error: ""})
     }
 
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            alert("You are not a valid user")
-            router.push("/")
-        }
-    })
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                alert("You are not a valid user")
+                router.push("/")
+            }
+        })
+    }, [router])
 
     const uploadMedia = () => {
         if (selectedFile.url.trim().length === 0) {
