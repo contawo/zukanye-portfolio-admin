@@ -11,17 +11,17 @@
   "dependencies": {
     "encoding": "^0.1.13",
     "firebase": "^10.4.0",
-    "next": "13.5.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "next": "^15.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-icons": "^4.11.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "eslint": "^9.18.0",
     "eslint-config-next": "13.5.4",
-    "typescript": "^5"
+    "typescript": "^5.7.3"
   }
 }

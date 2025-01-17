@@ -15,7 +15,7 @@ import { addDoc, collection } from "firebase/firestore";
 
 
 const options : string[] = [
-    "Concor", "Community Build", "Blue Moon Project", "IGUAL"
+    "Concor", "Community Build", "Blue Moon Project", "IGUAL", "LDM Quantity Surveyors", "ABLWA Quantity Surveyors"
 ]
 
 export default function ImageUpload() {

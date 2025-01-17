@@ -13,7 +13,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
 const options : string[] = [
-    "Concor", "Community Build", "Blue Moon Project", "IGUAL", "Jagger Library"
+    "Concor", "Community Build", "Blue Moon Project", "IGUAL", "Jagger Library", "LDM Quantity Surveyors", "ABLWA Quantity Surveyors"
 ]
 
 export default function FileUpload() {
